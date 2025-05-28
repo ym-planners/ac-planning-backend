@@ -1,8 +1,10 @@
-fastapi
-uvicorn[standard]
+Flask
 ortools
 openpyxl
 pandas
-python-multipart
+google-cloud-storage
+# FastAPI and Uvicorn are no longer needed for Firebase Functions
+# python-multipart was for FastAPI file uploads, not needed now
+# requests and pytest are for testing, can be kept for local testing if desired
 requests
 pytest
