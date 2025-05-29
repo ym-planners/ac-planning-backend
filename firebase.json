@@ -1,0 +1,74 @@
+{
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "venv",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ],
+      "runtime": "python311",
+      "region": "us-central1",
+      "entryPoint": "optimizePlan",
+      "trigger": {
+        "httpTrigger": {
+          "path": "/api/optimize/plan",
+          "method": "POST"
+        }
+      },
+      "environmentVariables": {
+        "DATA_BUCKET_NAME": "your-gcs-bucket-for-input-data",
+        "DATA_FILE_BLOB_NAME": "turning-data.xlsx",
+        "RESULTS_BUCKET_NAME": "your-gcs-bucket-for-results",
+        "PYTHON_VERSION": "3.11"
+      },
+      "timeoutSeconds": 540,
+      "availableMemoryMb": 1024
+    },
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "venv",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ],
+      "runtime": "python311",
+      "region": "us-central1",
+      "entryPoint": "getPlanResults",
+      "trigger": {
+        "httpTrigger": {
+          "path": "/api/optimize/plan/results/{run_id}",
+          "method": "GET"
+        }
+      },
+      "environmentVariables": {
+        "RESULTS_BUCKET_NAME": "your-gcs-bucket-for-results",
+        "PYTHON_VERSION": "3.11"
+      },
+      "timeoutSeconds": 60,
+      "availableMemoryMb": 256
+    }
+  ],
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/api/optimize/plan",
+        "function": "optimizePlan"
+      },
+      {
+        "source": "/api/optimize/plan/results/**",
+        "function": "getPlanResults" 
+      }
+    ]
+  }
+}
